@@ -1,1 +1,1 @@
-export * from "./mine.slices";
+export * from "./mineGame.slices";

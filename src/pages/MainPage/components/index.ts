@@ -1,1 +1,1 @@
-export { default as MineBoard } from "./MineBoard";
+export { default as GameBoard } from "./GameBoard";

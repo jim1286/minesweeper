@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import mineSlice from "./features/mine.slices";
+import mineGameSlice from "./features/mineGame.slices";
 
 export const store = configureStore({
   reducer: {
-    mineSlice: mineSlice,
+    mineGameSlice: mineGameSlice,
   },
 });
 
