@@ -18,13 +18,14 @@ export const MineWrap = styled.div`
 `;
 
 export const MineItem = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: #bdbdbd;
-  font-size: 20px;
-  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  background-color: #ccc;
+  border: 1px solid #fff;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 5px;
+  cursor: pointer;
 `;
