@@ -1,1 +1,1 @@
-export * from "./mine.interface";
+export * from "./mineGame.interface";

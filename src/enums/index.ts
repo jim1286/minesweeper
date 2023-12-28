@@ -1,1 +1,1 @@
-export * from "./mine.enum";
+export * from "./mineGame.enum";

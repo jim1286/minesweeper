@@ -1,5 +1,5 @@
 export enum ItemType {
-  NORMAL = "normal",
+  NOT_MINE = "not_mine",
   MINE = "mine",
 }
 

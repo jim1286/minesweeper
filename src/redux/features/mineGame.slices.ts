@@ -1,18 +1,20 @@
-import { Item } from "@/interfaces";
+import { GameBoardSize, Item } from "@/interfaces";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type MineGameSliceState = {
-  items: Item[];
+  items?: Item[][];
   startGame: boolean;
+  mineNumber: number;
+  gameBoardSize: GameBoardSize;
   level?: number;
-  mineCount: number;
 };
 
 const initialState: MineGameSliceState = {
-  items: [],
+  items: undefined,
   startGame: false,
+  mineNumber: 3,
+  gameBoardSize: { row: 6, column: 4 },
   level: undefined,
-  mineCount: 0,
 };
 
 export const mineGameSlice = createSlice({
@@ -25,17 +27,21 @@ export const mineGameSlice = createSlice({
     setStopGame: (state) => {
       state.startGame = false;
     },
-    setItems: (state, action: PayloadAction<Item[]>) => {
+    setItems: (state, action: PayloadAction<Item[][]>) => {
       state.items = action.payload;
     },
     setLevel: (state, action: PayloadAction<number>) => {
       state.level = action.payload;
     },
-    setMineCount: (state, action: PayloadAction<number>) => {
-      state.mineCount = action.payload;
+    setGameBoardSize: (state, action: PayloadAction<GameBoardSize>) => {
+      state.gameBoardSize = action.payload;
+    },
+    setMineNumber: (state, action: PayloadAction<number>) => {
+      state.mineNumber = action.payload;
     },
   },
 });
 
-export const { setStartGame, setStopGame, setItems } = mineGameSlice.actions;
+export const { setStartGame, setStopGame, setItems, setGameBoardSize } =
+  mineGameSlice.actions;
 export default mineGameSlice.reducer;
