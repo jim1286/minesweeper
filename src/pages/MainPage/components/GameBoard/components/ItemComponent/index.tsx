@@ -44,6 +44,8 @@ function ItemComponent({
   return (
     <Container
       key={nanoid()}
+      checked={item ? item.actionType !== ItemActionEnum.CHECKED : true}
+      minNumber={item && item.aroundMineNum}
       onClick={() => onClick(columnIndex, rowIndex, item)}
       onContextMenu={(e) => onContextMenu(e, columnIndex, rowIndex)}
     >
