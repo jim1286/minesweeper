@@ -50,11 +50,13 @@ function GameBoard() {
         convertedItems(newItems, gameBoardSize, columnIndex, rowIndex);
         dispatch(setItems(newItems));
 
-        const mineNum = newItems
+        const unCheckedItemNumber = newItems
           .flat()
-          .filter((newItem) => newItem.type === ItemEnum.MINE).length;
+          .filter(
+            (newItems) => newItems.actionType === ItemActionEnum.UNCHECKED
+          ).length;
 
-        if (mineNum === 0) {
+        if (unCheckedItemNumber === mineNumber) {
           dispatch(setWinGame());
         }
         break;
