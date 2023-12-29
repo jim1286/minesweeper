@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 interface MineNumberProps {
-  checked: boolean;
-  minNumber?: number;
+  isBlock?: boolean;
+  mineNumber?: number;
 }
 
 export const Container = styled.div<MineNumberProps>`
   width: 30px;
   height: 30px;
-  background-color: #ccc;
+  background-color: ${(props) => (props.isBlock ? "#fff" : "#ccc")};
   border: 1px solid #fff;
   font-size: 14px;
   display: flex;
@@ -18,7 +18,7 @@ export const Container = styled.div<MineNumberProps>`
   cursor: pointer;
 
   color: ${(props) => {
-    switch (props.minNumber) {
+    switch (props.mineNumber) {
       case 1:
         return "#007BD9";
       case 2:

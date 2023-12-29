@@ -30,7 +30,7 @@ function ItemComponent({
 
     switch (item.actionType) {
       case ItemActionEnum.CHECKED: {
-        return item.aroundMineNum;
+        return item.aroundMineNum !== 0 && item.aroundMineNum;
       }
       case ItemActionEnum.UNCHECKED: {
         return null;
@@ -44,8 +44,10 @@ function ItemComponent({
   return (
     <Container
       key={nanoid()}
-      checked={item ? item.actionType !== ItemActionEnum.CHECKED : true}
-      minNumber={item && item.aroundMineNum}
+      isBlock={
+        item?.aroundMineNum === 0 && item?.actionType === ItemActionEnum.CHECKED
+      }
+      mineNumber={item?.aroundMineNum}
       onClick={() => onClick(columnIndex, rowIndex, item)}
       onContextMenu={(e) => onContextMenu(e, columnIndex, rowIndex)}
     >
