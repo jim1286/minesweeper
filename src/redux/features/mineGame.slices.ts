@@ -48,6 +48,11 @@ export const mineGameSlice = createSlice({
     setMineNumber: (state, action: PayloadAction<number>) => {
       state.mineNumber = action.payload;
     },
+    resetGame: (state) => {
+      state.items = undefined;
+      state.startGame = false;
+      state.gameResult = undefined;
+    },
   },
 });
 
@@ -58,5 +63,6 @@ export const {
   setLoseGame,
   setItems,
   setGameBoardSize,
+  resetGame,
 } = mineGameSlice.actions;
 export default mineGameSlice.reducer;
