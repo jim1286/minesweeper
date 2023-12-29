@@ -1,9 +1,9 @@
-import { ItemType, ItemActionType } from "@/enums";
+import { ItemEnum, ItemActionEnum } from "@/enums";
 
 export interface Item {
   id: string;
-  type: ItemType;
-  actionType: ItemActionType;
+  type: ItemEnum;
+  actionType: ItemActionEnum;
   aroundMineNum: number;
 }
 

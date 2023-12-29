@@ -1,29 +1,54 @@
 import { nanoid } from "@reduxjs/toolkit";
 import { Container } from "./styles";
 import { Item } from "@/interfaces";
-import { ItemActionType, ItemType } from "@/enums";
+import { ItemActionEnum, ItemEnum } from "@/enums";
+import { IconFlag } from "@tabler/icons-react";
 
 interface Props {
   rowIndex: number;
   columnIndex: number;
   item?: Item;
-  onClick: (columnIndex: number, rowIndex: number) => void;
+  onClick: (columnIndex: number, rowIndex: number, item?: Item) => void;
+  onContextMenu: (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    columnIndex: number,
+    rowIndex: number
+  ) => void;
 }
 
-function ItemComponent({ rowIndex, columnIndex, item, onClick }: Props) {
-  // const renderItemValue = (() => {
-  //   if (!item) {
-  //     return null;
-  //   }
+function ItemComponent({
+  rowIndex,
+  columnIndex,
+  item,
+  onClick,
+  onContextMenu,
+}: Props) {
+  const renderItemValue = (() => {
+    if (!item) {
+      return null;
+    }
 
-  // })();
+    switch (item.actionType) {
+      case ItemActionEnum.CHECKED: {
+        return item.aroundMineNum;
+      }
+      case ItemActionEnum.UNCHECKED: {
+        return null;
+      }
+      case ItemActionEnum.FLAG: {
+        return <IconFlag fill="red" />;
+      }
+    }
+  })();
 
   return (
-    <Container key={nanoid()} onClick={() => onClick(columnIndex, rowIndex)}>
-      {item?.type === ItemType.MINE && "x"}
-      {item?.type === ItemType.NOT_MINE &&
-        item?.actionType === ItemActionType.CHECKED &&
-        item.aroundMineNum}
+    <Container
+      key={nanoid()}
+      onClick={() => onClick(columnIndex, rowIndex, item)}
+      onContextMenu={(e) => onContextMenu(e, columnIndex, rowIndex, item)}
+    >
+      {item?.type === ItemEnum.MINE && "x"}
+      {renderItemValue}
     </Container>
   );
 }
