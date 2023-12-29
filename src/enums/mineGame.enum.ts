@@ -13,3 +13,10 @@ export enum GameResultEnum {
   WIN = "win",
   LOST = "lose",
 }
+
+export enum GameLevelEnum {
+  BEGINNER = "beginner",
+  INTERMEDIATE = "intermediate",
+  EXPERT = "expert",
+  CUSTOM = "custom",
+}

@@ -1,10 +1,13 @@
-import { GameBoard } from "./components";
-import { Container } from "./styles";
+import { GameBoard, Header } from "./components";
+import { Container, GameBoardContainer } from "./styles";
 
 function MainPage() {
   return (
     <Container>
-      <GameBoard />
+      <GameBoardContainer>
+        <Header />
+        <GameBoard />
+      </GameBoardContainer>
     </Container>
   );
 }
