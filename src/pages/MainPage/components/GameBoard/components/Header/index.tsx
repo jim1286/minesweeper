@@ -9,7 +9,7 @@ function Header() {
   const dispatch = useAppDispatch();
   const items = useAppSelector((state) => state.mineGameSlice.items);
   const startGame = useAppSelector((state) => state.mineGameSlice.startGame);
-  const mineNumber = useAppSelector((state) => state.mineGameSlice.mineNumber);
+  const gameOption = useAppSelector((state) => state.mineGameSlice.gameOption);
   const gameResult = useAppSelector((state) => state.mineGameSlice.gameResult);
   const usedFlagNumber = items
     ?.flat()
@@ -35,7 +35,7 @@ function Header() {
 
   return (
     <Container>
-      <Wrap>{usedFlagNumber ? mineNumber - usedFlagNumber : 0}</Wrap>
+      <Wrap>{usedFlagNumber ? gameOption.mineNumber - usedFlagNumber : 0}</Wrap>
 
       <IconContainer onClick={handleClickReset}>
         {!gameResult ? (

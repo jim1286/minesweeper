@@ -1,25 +1,37 @@
-import { Modal, Popover } from "antd";
-import { Container, Content, ContentWrap, TitleWrap } from "./styles";
+import { InputNumber, Modal, Popover } from "antd";
+import {
+  Container,
+  Content,
+  ContentWrap,
+  InputContainer,
+  ModalBody,
+  TitleWrap,
+} from "./styles";
 import { useState } from "react";
 import { GameLevelEnum } from "@/enums";
-import { GameBoardSize } from "@/interfaces";
+import { GameOption } from "@/interfaces";
 import { useAppDispatch } from "@/redux/hook";
-import {
-  setGameBoardSize,
-  setGameLevel,
-  setMineNumber,
-} from "@/redux/features";
+import { setGameOption } from "@/redux/features";
 
 function Header() {
   const dispatch = useAppDispatch();
   const [popOpen, setPopOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [customOption, setCustomOption] = useState<GameOption>({
+    gameLevel: GameLevelEnum.CUSTOM,
+    gameBoardSize: {
+      row: 8,
+      column: 8,
+    },
+    mineNumber: 10,
+  });
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleOk = () => {
+    dispatch(setGameOption(customOption));
     setPopOpen(false);
     setIsModalOpen(false);
   };
@@ -29,48 +41,52 @@ function Header() {
   };
 
   const handleLevel = (gameLevel: GameLevelEnum) => {
-    let boardSize: GameBoardSize;
-    let mineNumber: number;
+    let newGameOption: GameOption;
 
     switch (gameLevel) {
       case GameLevelEnum.BEGINNER: {
-        boardSize = {
-          row: 8,
-          column: 8,
+        newGameOption = {
+          gameLevel: GameLevelEnum.BEGINNER,
+          gameBoardSize: {
+            row: 8,
+            column: 8,
+          },
+          mineNumber: 10,
         };
-        mineNumber = 10;
+
         break;
       }
       case GameLevelEnum.INTERMEDIATE: {
-        boardSize = {
-          row: 16,
-          column: 16,
+        newGameOption = {
+          gameLevel: GameLevelEnum.INTERMEDIATE,
+          gameBoardSize: {
+            row: 16,
+            column: 16,
+          },
+          mineNumber: 40,
         };
-        mineNumber = 40;
+
         break;
       }
       case GameLevelEnum.EXPERT: {
-        boardSize = {
-          row: 32,
-          column: 16,
+        newGameOption = {
+          gameLevel: GameLevelEnum.EXPERT,
+          gameBoardSize: {
+            row: 32,
+            column: 16,
+          },
+          mineNumber: 100,
         };
-        mineNumber = 100;
+
         break;
       }
       case GameLevelEnum.CUSTOM: {
-        // showModal();
-        boardSize = {
-          row: 32,
-          column: 16,
-        };
-        mineNumber = 100;
-        break;
+        showModal();
+        return;
       }
     }
 
-    dispatch(setGameLevel(gameLevel));
-    dispatch(setGameBoardSize(boardSize));
-    dispatch(setMineNumber(mineNumber));
+    dispatch(setGameOption(newGameOption));
     setPopOpen(false);
   };
 
@@ -106,12 +122,66 @@ function Header() {
         <TitleWrap>Game</TitleWrap>
       </Popover>
       <Modal
+        width={400}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         centered
       >
-        123
+        <ModalBody>
+          <InputContainer>
+            Game Height :
+            <InputNumber
+              value={customOption.gameBoardSize.column}
+              min={8}
+              max={100}
+              onChange={(value: string | number | null) => {
+                setCustomOption({
+                  ...customOption,
+                  gameBoardSize: {
+                    row: customOption.gameBoardSize.row,
+                    column: Math.floor(value as number),
+                  },
+                });
+              }}
+            />
+          </InputContainer>
+          <InputContainer>
+            Game Width :
+            <InputNumber
+              value={customOption.gameBoardSize.row}
+              min={8}
+              max={100}
+              onChange={(value: string | number | null) => {
+                setCustomOption({
+                  ...customOption,
+                  gameBoardSize: {
+                    row: Math.floor(value as number),
+                    column: customOption.gameBoardSize.column,
+                  },
+                });
+              }}
+            />
+          </InputContainer>
+          <InputContainer>
+            Number Of Mines :
+            <InputNumber
+              value={customOption.mineNumber}
+              min={1}
+              max={Math.floor(
+                (customOption.gameBoardSize.column *
+                  customOption.gameBoardSize.row) /
+                  3
+              )}
+              onChange={(value: string | number | null) => {
+                setCustomOption({
+                  ...customOption,
+                  mineNumber: value as number,
+                });
+              }}
+            />
+          </InputContainer>
+        </ModalBody>
       </Modal>
     </Container>
   );

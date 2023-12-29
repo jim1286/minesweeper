@@ -1,23 +1,26 @@
 import { GameLevelEnum, GameResultEnum } from "@/enums";
-import { GameBoardSize, Item } from "@/interfaces";
+import { GameOption, Item } from "@/interfaces";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type MineGameSliceState = {
   items?: Item[][];
   startGame: boolean;
-  mineNumber: number;
+  gameOption: GameOption;
   gameResult?: GameResultEnum;
-  gameBoardSize: GameBoardSize;
-  gameLevel?: GameLevelEnum;
 };
 
 const initialState: MineGameSliceState = {
   items: undefined,
   startGame: false,
-  mineNumber: 3,
+  gameOption: {
+    gameLevel: GameLevelEnum.BEGINNER,
+    gameBoardSize: {
+      row: 8,
+      column: 8,
+    },
+    mineNumber: 10,
+  },
   gameResult: undefined,
-  gameBoardSize: { row: 6, column: 4 },
-  gameLevel: undefined,
 };
 
 export const mineGameSlice = createSlice({
@@ -39,14 +42,8 @@ export const mineGameSlice = createSlice({
     setItems: (state, action: PayloadAction<Item[][]>) => {
       state.items = action.payload;
     },
-    setGameLevel: (state, action: PayloadAction<GameLevelEnum>) => {
-      state.gameLevel = action.payload;
-    },
-    setGameBoardSize: (state, action: PayloadAction<GameBoardSize>) => {
-      state.gameBoardSize = action.payload;
-    },
-    setMineNumber: (state, action: PayloadAction<number>) => {
-      state.mineNumber = action.payload;
+    setGameOption: (state, action: PayloadAction<GameOption>) => {
+      state.gameOption = action.payload;
     },
     resetGame: (state) => {
       state.items = undefined;
@@ -62,9 +59,7 @@ export const {
   setWinGame,
   setLoseGame,
   setItems,
-  setGameLevel,
-  setGameBoardSize,
-  setMineNumber,
+  setGameOption,
   resetGame,
 } = mineGameSlice.actions;
 export default mineGameSlice.reducer;

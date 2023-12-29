@@ -24,3 +24,15 @@ export const TitleWrap = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const ModalBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const InputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;

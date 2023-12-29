@@ -18,20 +18,21 @@ function GameBoard() {
   const dispatch = useAppDispatch();
   const { convertedItems, getNewItems } = useMineGame();
   const startGame = useAppSelector((state) => state.mineGameSlice.startGame);
-  const mineNumber = useAppSelector((state) => state.mineGameSlice.mineNumber);
-  const gameBoardSize = useAppSelector(
-    (state) => state.mineGameSlice.gameBoardSize
-  );
+  const gameOption = useAppSelector((state) => state.mineGameSlice.gameOption);
+
   const items: Item[][] | undefined[][] =
     useAppSelector((state) => state.mineGameSlice.items) ||
-    Array.from(Array(gameBoardSize.column), () =>
-      new Array(gameBoardSize.row).fill(undefined)
+    Array.from(Array(gameOption.gameBoardSize.column), () =>
+      new Array(gameOption.gameBoardSize.row).fill(undefined)
     );
 
   const handleClick = (columnIndex: number, rowIndex: number, item?: Item) => {
     if (!startGame) {
-      const newItems: Item[][] = getNewItems(gameBoardSize, mineNumber);
-      convertedItems(newItems, gameBoardSize, columnIndex, rowIndex);
+      const newItems: Item[][] = getNewItems(
+        gameOption.gameBoardSize,
+        gameOption.mineNumber
+      );
+      convertedItems(newItems, gameOption.gameBoardSize, columnIndex, rowIndex);
       dispatch(setItems(newItems));
       dispatch(setStartGame());
       return;
@@ -49,7 +50,12 @@ function GameBoard() {
       }
       case ItemEnum.NOT_MINE: {
         const newItems: Item[][] = cloneDeep(items) as Item[][];
-        convertedItems(newItems, gameBoardSize, columnIndex, rowIndex);
+        convertedItems(
+          newItems,
+          gameOption.gameBoardSize,
+          columnIndex,
+          rowIndex
+        );
         dispatch(setItems(newItems));
 
         const unCheckedItemNumber = newItems
@@ -58,7 +64,7 @@ function GameBoard() {
             (newItems) => newItems.actionType === ItemActionEnum.UNCHECKED
           ).length;
 
-        if (unCheckedItemNumber === mineNumber) {
+        if (unCheckedItemNumber === gameOption.mineNumber) {
           dispatch(setWinGame());
           dispatch(setStopGame());
         }
