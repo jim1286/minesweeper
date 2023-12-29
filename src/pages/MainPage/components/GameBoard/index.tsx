@@ -36,7 +36,7 @@ function GameBoard() {
       return;
     }
 
-    if (!item) {
+    if (!item || item.actionType === ItemActionEnum.CHECKED) {
       return;
     }
 
