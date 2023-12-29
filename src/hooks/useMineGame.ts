@@ -43,10 +43,10 @@ const useMineGame = () => {
   ) => {
     items[columnIndex][rowIndex].actionType = ItemActionEnum.CHECKED;
 
-    const dx = [-1, 1, 0, 0, -1, -1, 1, 1];
-    const dy = [0, 0, -1, 1, -1, 1, -1, 1];
+    const dx = [-1, 1, 0, 0];
+    const dy = [0, 0, -1, 1];
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 4; i++) {
       const checkX = columnIndex + dx[i];
       const checkY = rowIndex + dy[i];
 
@@ -58,7 +58,7 @@ const useMineGame = () => {
       }
     }
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 4; i++) {
       const checkX = columnIndex + dx[i];
       const checkY = rowIndex + dy[i];
 
