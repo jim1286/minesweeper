@@ -6,6 +6,7 @@ import {
   setItems,
   setLoseGame,
   setStartGame,
+  setStopGame,
   setWinGame,
 } from "@/redux/features";
 import { Item } from "@/interfaces";
@@ -43,6 +44,7 @@ function GameBoard() {
     switch (item.type) {
       case ItemEnum.MINE: {
         dispatch(setLoseGame());
+        dispatch(setStopGame());
         break;
       }
       case ItemEnum.NOT_MINE: {
@@ -58,6 +60,7 @@ function GameBoard() {
 
         if (unCheckedItemNumber === mineNumber) {
           dispatch(setWinGame());
+          dispatch(setStopGame());
         }
         break;
       }
