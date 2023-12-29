@@ -74,7 +74,21 @@ function GameBoard() {
     }
 
     const newItems: Item[][] = cloneDeep(items) as Item[][];
-    newItems[columnIndex][rowIndex].actionType = ItemActionEnum.FLAG;
+    const item = newItems[columnIndex][rowIndex];
+
+    switch (item.actionType) {
+      case ItemActionEnum.CHECKED: {
+        break;
+      }
+      case ItemActionEnum.UNCHECKED: {
+        item.actionType = ItemActionEnum.FLAG;
+        break;
+      }
+      case ItemActionEnum.FLAG: {
+        item.actionType = ItemActionEnum.UNCHECKED;
+        break;
+      }
+    }
     dispatch(setItems(newItems));
   };
 

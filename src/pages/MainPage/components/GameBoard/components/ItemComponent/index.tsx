@@ -45,7 +45,7 @@ function ItemComponent({
     <Container
       key={nanoid()}
       onClick={() => onClick(columnIndex, rowIndex, item)}
-      onContextMenu={(e) => onContextMenu(e, columnIndex, rowIndex, item)}
+      onContextMenu={(e) => onContextMenu(e, columnIndex, rowIndex)}
     >
       {item?.type === ItemEnum.MINE && "x"}
       {renderItemValue}
