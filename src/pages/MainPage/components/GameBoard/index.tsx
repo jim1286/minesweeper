@@ -113,7 +113,7 @@ function GameBoard() {
     columnIndex: number,
     rowIndex: number
   ) => {
-    e.preventDefault();
+    e.stopPropagation();
 
     if (!startGame || gameResult) {
       return;
