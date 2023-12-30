@@ -1,16 +1,19 @@
 import styled from "styled-components";
 
 interface MineNumberProps {
-  isBlock?: boolean;
   mineNumber?: number;
+  isChecked?: boolean;
+  isMine?: boolean;
 }
 
 export const Container = styled.div<MineNumberProps>`
   width: 30px;
   height: 30px;
-  background-color: ${(props) => (props.isBlock ? "#fff" : "#ccc")};
-  border: 1px solid #fff;
+  background-color: ${(props) =>
+    props.isMine ? "red" : props.isChecked ? "#fff" : "grey"};
+  border: 1px solid lightgrey;
   font-size: 14px;
+  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,13 +23,13 @@ export const Container = styled.div<MineNumberProps>`
   color: ${(props) => {
     switch (props.mineNumber) {
       case 1:
-        return "#007BD9";
+        return "blue";
       case 2:
-        return "#09B219";
+        return "green";
       case 3:
-        return "#FB0B0D";
+        return "red";
       case 4:
-        return "#223DAA";
+        return "purple";
       default:
         return "black";
     }

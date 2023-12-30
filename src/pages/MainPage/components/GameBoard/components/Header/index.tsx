@@ -17,6 +17,10 @@ function Header() {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
+    if (gameResult) {
+      return;
+    }
+
     if (!startGame) {
       setSeconds(0);
       return;
@@ -27,7 +31,7 @@ function Header() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [startGame]);
+  }, [startGame, gameResult]);
 
   const handleClickReset = () => {
     dispatch(resetGame());

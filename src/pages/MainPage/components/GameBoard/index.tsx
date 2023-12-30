@@ -9,16 +9,19 @@ import {
   setStopGame,
   setWinGame,
 } from "@/redux/features";
-import { Item } from "@/interfaces";
+import { GameBoardSize, Item } from "@/interfaces";
 import { useMineGame } from "@/hooks";
 import { ItemActionEnum, ItemEnum } from "@/enums";
 import { cloneDeep } from "lodash";
+import { useRef } from "react";
 
 function GameBoard() {
   const dispatch = useAppDispatch();
   const { convertedItems, getNewItems } = useMineGame();
   const startGame = useAppSelector((state) => state.mineGameSlice.startGame);
   const gameOption = useAppSelector((state) => state.mineGameSlice.gameOption);
+  const gameResult = useAppSelector((state) => state.mineGameSlice.gameResult);
+  const currentPosition = useRef<GameBoardSize | undefined>(undefined);
 
   const items: Item[][] | undefined[][] =
     useAppSelector((state) => state.mineGameSlice.items) ||
@@ -27,49 +30,74 @@ function GameBoard() {
     );
 
   const handleClick = (columnIndex: number, rowIndex: number, item?: Item) => {
+    if (gameResult) {
+      return;
+    }
+
+    currentPosition.current = {
+      row: rowIndex,
+      column: columnIndex,
+    };
+
     if (!startGame) {
       const newItems: Item[][] = getNewItems(
         gameOption.gameBoardSize,
-        gameOption.mineNumber
+        gameOption.mineNumber,
+        columnIndex,
+        rowIndex
       );
-      convertedItems(newItems, gameOption.gameBoardSize, columnIndex, rowIndex);
-      dispatch(setItems(newItems));
       dispatch(setStartGame());
+      handleNotMine(newItems, columnIndex, rowIndex);
       return;
     }
 
-    if (!item || item.actionType === ItemActionEnum.CHECKED) {
+    if (
+      !item ||
+      item.actionType === ItemActionEnum.FLAG ||
+      item.actionType === ItemActionEnum.CHECKED
+    ) {
       return;
     }
+
+    const newItems: Item[][] = cloneDeep(items) as Item[][];
 
     switch (item.type) {
       case ItemEnum.MINE: {
+        newItems[columnIndex][rowIndex] = {
+          ...item,
+          actionType: ItemActionEnum.CHECKED,
+        };
+
+        dispatch(setItems(newItems));
         dispatch(setLoseGame());
         dispatch(setStopGame());
         break;
       }
       case ItemEnum.NOT_MINE: {
-        const newItems: Item[][] = cloneDeep(items) as Item[][];
-        convertedItems(
-          newItems,
-          gameOption.gameBoardSize,
-          columnIndex,
-          rowIndex
-        );
-        dispatch(setItems(newItems));
-
-        const unCheckedItemNumber = newItems
-          .flat()
-          .filter(
-            (newItems) => newItems.actionType === ItemActionEnum.UNCHECKED
-          ).length;
-
-        if (unCheckedItemNumber === gameOption.mineNumber) {
-          dispatch(setWinGame());
-          dispatch(setStopGame());
-        }
+        handleNotMine(newItems, columnIndex, rowIndex);
         break;
       }
+    }
+  };
+
+  const handleNotMine = (
+    newItems: Item[][],
+    columnIndex: number,
+    rowIndex: number
+  ) => {
+    convertedItems(newItems, gameOption.gameBoardSize, columnIndex, rowIndex);
+    dispatch(setItems(newItems));
+    const unCheckedItemNumber = newItems
+      .flat()
+      .filter(
+        (newItems) =>
+          newItems.actionType === ItemActionEnum.UNCHECKED ||
+          newItems.actionType === ItemActionEnum.FLAG
+      ).length;
+
+    if (unCheckedItemNumber === gameOption.mineNumber) {
+      dispatch(setWinGame());
+      dispatch(setStopGame());
     }
   };
 
@@ -80,7 +108,7 @@ function GameBoard() {
   ) => {
     e.preventDefault();
 
-    if (!startGame) {
+    if (!startGame || gameResult) {
       return;
     }
 
@@ -112,11 +140,12 @@ function GameBoard() {
             {itemColumn.map((item, rowIndex) => (
               <ItemComponent
                 key={nanoid()}
+                rowIndex={rowIndex}
+                columnIndex={columnIndex}
+                currentPosition={currentPosition}
                 item={item}
                 onClick={handleClick}
                 onContextMenu={handleContextMenu}
-                rowIndex={rowIndex}
-                columnIndex={columnIndex}
               />
             ))}
           </ItemWrap>

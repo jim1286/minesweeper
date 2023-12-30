@@ -3,7 +3,12 @@ import { GameBoardSize, Item } from "@/interfaces";
 import { nanoid } from "@reduxjs/toolkit";
 
 const useMineGame = () => {
-  const getNewItems = (gameBoardSize: GameBoardSize, mineNumber: number) => {
+  const getNewItems = (
+    gameBoardSize: GameBoardSize,
+    mineNumber: number,
+    columnIndex: number,
+    rowIndex: number
+  ) => {
     const newItems: Item[][] = [];
 
     for (let i = 0; i < gameBoardSize.column; i++) {
@@ -20,15 +25,17 @@ const useMineGame = () => {
       newItems.push(newRow);
     }
 
-    let newMineNumber = mineNumber;
-
-    while (newMineNumber >= 1) {
+    while (mineNumber >= 1) {
       const randomRow = Math.floor(Math.random() * gameBoardSize.row);
       const randomColumn = Math.floor(Math.random() * gameBoardSize.column);
 
+      if (columnIndex === randomColumn && rowIndex === randomRow) {
+        continue;
+      }
+
       if (newItems[randomColumn][randomRow].type === ItemEnum.NOT_MINE) {
         newItems[randomColumn][randomRow].type = ItemEnum.MINE;
-        newMineNumber--;
+        mineNumber--;
       }
     }
 
@@ -43,12 +50,12 @@ const useMineGame = () => {
   ) => {
     items[columnIndex][rowIndex].actionType = ItemActionEnum.CHECKED;
 
-    const dx = [-1, 1, 0, 0];
-    const dy = [0, 0, -1, 1];
+    const aroundX = [-1, 1, 0, 0, -1, -1, 1, 1];
+    const aroundY = [0, 0, -1, 1, -1, 1, -1, 1];
 
-    for (let i = 0; i < 4; i++) {
-      const checkX = columnIndex + dx[i];
-      const checkY = rowIndex + dy[i];
+    for (let i = 0; i < 8; i++) {
+      const checkX = columnIndex + aroundX[i];
+      const checkY = rowIndex + aroundY[i];
 
       if (
         checkLength(checkX, checkY, gameBoardSize.column, gameBoardSize.row) &&
@@ -57,6 +64,9 @@ const useMineGame = () => {
         items[columnIndex][rowIndex].aroundMineNum++;
       }
     }
+
+    const dx = [-1, 1, 0, 0];
+    const dy = [0, 0, -1, 1];
 
     for (let i = 0; i < 4; i++) {
       const checkX = columnIndex + dx[i];
