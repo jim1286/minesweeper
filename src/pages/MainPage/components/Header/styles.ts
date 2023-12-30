@@ -13,26 +13,9 @@ export const ContentWrap = styled.div`
   flex-direction: column;
 `;
 
-export const Content = styled.div`
-  padding: 5px;
-  cursor: pointer;
-`;
-
 export const TitleWrap = styled.div`
   width: 30%;
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-export const ModalBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-export const InputContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
 `;

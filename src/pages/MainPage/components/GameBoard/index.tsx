@@ -3,6 +3,7 @@ import { Header, ItemComponent } from "./components";
 import { BoardContainer, Container, ItemWrap } from "./styles";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import {
+  resetGame,
   setItems,
   setLoseGame,
   setStartGame,
@@ -13,7 +14,7 @@ import { GameBoardSize, Item } from "@/interfaces";
 import { useMineGame } from "@/hooks";
 import { ItemActionEnum, ItemEnum } from "@/enums";
 import { cloneDeep } from "lodash";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 function GameBoard() {
   const dispatch = useAppDispatch();
@@ -28,6 +29,12 @@ function GameBoard() {
     Array.from(Array(gameOption.gameBoardSize.column), () =>
       new Array(gameOption.gameBoardSize.row).fill(undefined)
     );
+
+  useEffect(() => {
+    if (gameOption) {
+      dispatch(resetGame());
+    }
+  }, [gameOption]);
 
   const handleClick = (columnIndex: number, rowIndex: number, item?: Item) => {
     if (gameResult) {

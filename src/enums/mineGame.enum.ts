@@ -15,8 +15,8 @@ export enum GameResultEnum {
 }
 
 export enum GameLevelEnum {
-  BEGINNER = "beginner",
-  INTERMEDIATE = "intermediate",
-  EXPERT = "expert",
-  CUSTOM = "custom",
+  BEGINNER = "Beginner",
+  INTERMEDIATE = "Intermediate",
+  EXPERT = "Expert",
+  CUSTOM = "Custom",
 }
